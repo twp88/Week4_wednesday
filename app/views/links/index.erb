@@ -9,10 +9,10 @@
   <% end %>
 </ul>
 <form action="/links/new" >
-  <input type="submit" value="Add new link...">
+  <input type="submit" value="Add new link">
   </form>
 
-  <form action="/tags" method ="POST">
+  <form action="/tags/:name" method="GET">
     <input type = "text" name='tag'>
-    <input type="submit" value="Search by tags...">
+    <input type="submit" value="Search by tags">
     </form>
