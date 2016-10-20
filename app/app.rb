@@ -24,6 +24,14 @@ class BookmarkManager < Sinatra::Base
     redirect to('/links')
   end
 
+  post '/tags' do
+    tag = params[:tag]
+    redirect to("/tags/#{tag}")
+  end
+
+  get "/tags/bubbles" do
+    erb :"/tags/bubbles"
+  end
   # start the server if ruby file executed directly
   run! if app_file == $0
 end
