@@ -1,1 +1,10 @@
 <h1>You've made it this far, might as well carry on.Bubbles website</h1>
+
+<ul id='links'>
+  <% @links.each do |link| %>
+    <li>
+      Title: <%=link.title %>
+      URL: <a href="http://<%=link.url%>"><%=link.title%></a>
+    </li>
+  <% end %>
+</ul>
