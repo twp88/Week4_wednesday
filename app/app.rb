@@ -1,5 +1,8 @@
+ENV['RACK_ENV'] = 'development'
 require 'sinatra/base'
 require_relative 'models/link'
+
+
 
 class BookmarkManager < Sinatra::Base
   get '/' do
@@ -18,8 +21,11 @@ class BookmarkManager < Sinatra::Base
 
   post '/links' do
     link = Link.create(:title => params[:title], :url => params[:url])
-    tag = Tag.first_or_create(:tag => params[:tag])
-    link.tags << tag
+    params[:tag].split.each do |tag|
+      link.tags << Tag.first_or_create(tag: tag)
+    end
+
+    #link.tags << tag
     link.save
     redirect to('/links')
   end
@@ -27,7 +33,10 @@ class BookmarkManager < Sinatra::Base
   get '/tags/:name' do
     tags = Tag.all
     filtered_tags = tags.select { |t| t.tag == params[:tag] }
+    p filtered_tags[0]
     @links = filtered_tags[0].links
+    p @links
+
     erb :'/tags/filtered_links'
   end
   # start the server if ruby file executed directly
