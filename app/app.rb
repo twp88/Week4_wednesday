@@ -1,15 +1,34 @@
 ENV['RACK_ENV'] = 'development'
 require 'sinatra/base'
 require_relative 'models/link'
+require_relative 'models/user_deets'
 
 
 
 class BookmarkManager < Sinatra::Base
+  enable :sessions
+
+  helpers do
+    def current_user
+      @current_user ||= User_deets.get(session[:user_id])
+    end
+  end
+
+  post '/signup' do
+    @user = User_deets.first_or_create(:user_name => params[:user_name], :email => params[:email], :password => params[:password])
+    session[:user_id] = @user.id
+    @user.save
+
+    redirect to('/links')
+  end
+
+
   get '/' do
-     redirect to('/links')
-   end
+     erb :'signup/signup'
+  end
 
   get '/links' do
+    @user_email = User_deets.all
     @links = Link.all
     @tag = Tag.all
     erb :'links/index'
